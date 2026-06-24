@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SYSTEM BREACH</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: #00ff9d;
+            font-family: monospace;
+        }
+
+        /* Canvas Matrix */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        /* Overlay principal */
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 2;
+        }
+
+        /* Glitch text */
+        .glitch {
+            font-size: 28px;
+            animation: flicker 1.2s infinite;
+            text-shadow: 0 0 10px #00ff9d;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1;}
+        }
+
+        /* Warning box */
+        .box {
+            border: 1px solid #00ff9d;
+            padding: 20px;
+            margin-top: 20px;
+            width: 60%;
+        }
+
+        /*Loding bar */ 
+        .bar {
+            width: 60%;
+            height: 20px;
+            border: 1px solid #00ff9d;
+            margin-top: 20px;
+        }
+
+        /* Popups */
+        .popup {
+            position: absolute;
+            padding: 10px;
+            border: 1px solid red;
+            font-size: 14px;
+            animation: flicker 0.5s infinite;
+        }
+</style>
+</head>        
+
+<body>
+
+    <canvas id="matrix"></canvas>
+
+    <div class="overlay">
+        <div class="glitch">EU SEI DE TUDO</div>
+        <div class="box">
+            Rastreando atividade recente...<br>
+            
+            EU SEI O QUE VOCÊ PESQUISOU SEMANA PASSADA
+       </div>
+
+       <div class="bar">
+           <div class="progress" id="progress"></div>
+       </div>
+    </div>
+
+<script> 
+//================= MATRIX EFFECT =================//
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*";
+letters = letters.split("");
+
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+for (let x = 0; x < columns; x++) {
+    drops[x] = 1;
+    
+function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyles = "#00ff9d";
+    ctx.font = fontSize + "px monospace"
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) 
+            drops[i] = 0;
+
+        drops[i]++;
+    }
+}
+
+setInterval(drawMatrix, 33);
+
+//================= LOADING BAR =================//
+let progress = 0;
+const bar = document.getElementById("progress");
+
+setInterval(() => { 
+    if (progress < 100) {
+        progess++;
+        bar.style.width = progress + "%";
+    }
+}, 80);
+
+//================= POPUPS =================//
+function spanwPopup() {
+    const p = document.createElement("div");
+    p.className = "popup";
+    p.innerText = "INTRUSÃO DETECTADA >> rastreando IP...";
+
+    p.style.top = Math.random() * window.innerHeight + "px";
+    p.style.left = Math.random() * window.innerWidth + "px";
+
+    document.body.appendChild(p)
+
+    setTimeout(() => {
+        p.remove();
+    }, 3000);
+}
+
+setInterval(spawnPopup, 1200);
+
+//================= RESIZE =================//
+setInterval(() => {
+    document.body.style.transform =
+        `translate(${Math.random()*4}px, ${Math.random()*4}px)`;
+}, 50);
+</script>
+
+</body>
+</html>
